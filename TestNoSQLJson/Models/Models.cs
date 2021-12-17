@@ -79,17 +79,8 @@ namespace TestNoSQLJson.Models
 
         [EmailAddress]
         public string Email { get; set; }
-
         public string CivicAddress { get; set; }
         public string Gender { get; set; }
-
-        //internal decimal _Version { get; set; }
-        
-        //[NotMapped]
         public decimal Version { get; set; }
-        //{
-        //    get { return _Version; }
-        //    set => _Version = Constants.CURRENT_VERSION; 
-        //}
     }
 }
