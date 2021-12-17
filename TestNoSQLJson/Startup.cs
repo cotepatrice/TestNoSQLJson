@@ -30,6 +30,8 @@ namespace TestNoSQLJson
         {
             var connection = @"Server=host.docker.internal,1433;Database=Blogging;User Id=SA;Password=yourStrong(!)Password";
             services.AddDbContext<BloggingContext>(options => options.UseSqlServer(connection));
+            connection = @"Server=host.docker.internal,1433;Database=ProfilsInverstisseurPOC;User Id=SA;Password=yourStrong(!)Password";
+            services.AddDbContext<ProfilInvestisseurContext>(options => options.UseSqlServer(connection));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

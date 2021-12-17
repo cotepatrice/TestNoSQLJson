@@ -9,31 +9,39 @@ using System.Threading.Tasks;
 
 namespace TestNoSQLJson.Models
 {
-    public class ProfilsInvestisseurContext : DbContext
+    public class ProfilInvestisseurContext : DbContext
     {
-        public ProfilsInvestisseurContext(DbContextOptions<ProfilsInvestisseurContext> options)
+        public ProfilInvestisseurContext(DbContextOptions<ProfilInvestisseurContext> options)
             : base(options)
         { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ProfilsInvestisseur>()
+            modelBuilder.Entity<ProfilInvestisseur>()
                 .Property(b => b._Content).HasColumnName("Content");
 
-            modelBuilder.Entity<Labels>()
+            modelBuilder.Entity<ProfilInvestisseur>()
+                .HasKey(p => new { p.ProfilInvestisseurId });
+
+            modelBuilder.Entity<Label>()
                 .HasKey(l => new { l.FieldName, l.Version });
 
-            //modelBuilder.Entity<Blog>()
-            //    .Property(b => b._Owner).HasColumnName("Owner");
+            modelBuilder.Entity<Subscriber>()
+                .HasKey(b => b.SubscriberId);
+
+            modelBuilder.Entity<ProfilInvestisseur>()
+                .HasOne(p => p.Subscriber);
         }
 
-        public DbSet<ProfilsInvestisseur> ProfilsInvestisseur { get; set; }
-        public DbSet<Labels> Labels { get; set; }
+        public DbSet<ProfilInvestisseur> ProfilInvestisseur { get; set; }
+        public DbSet<Subscriber> Subscriber { get; set; }
+        public DbSet<Label> Labels { get; set; }
     }
 
-    public class ProfilsInvestisseur
+    public class ProfilInvestisseur
     {
-        public int ProfilsInvestisseurId { get; set; }
+        public int ProfilInvestisseurId { get; set; }
+        public Subscriber Subscriber { get; set; }
         internal string _Content { get; set; }
 
         [NotMapped]
@@ -44,7 +52,14 @@ namespace TestNoSQLJson.Models
         }
     }
 
-    public class ProfilLine
+    public class Subscriber
+    {
+        public int SubscriberId { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+    }
+
+        public class ProfilLine
     {
         //public int FieldName { get; set; }
         //public decimal Version { get; set; }
@@ -54,7 +69,7 @@ namespace TestNoSQLJson.Models
         public Type Type { get; set; }
     }
 
-    public class Labels
+    public class Label
     {
         public string FieldName { get; set; }
         public decimal Version { get; set; }
