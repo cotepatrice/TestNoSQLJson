@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TestNoSQLJson.Common;
 using TestNoSQLJson.DTOs;
 using TestNoSQLJson.Models;
 
@@ -16,17 +17,19 @@ namespace TestNoSQLJson.Controllers
     public class ProfilInvestisseurController : ControllerBase
     {
         private ProfilInvestisseurContext _context;
+        private IConverter _converters;
 
-        public ProfilInvestisseurController(ProfilInvestisseurContext context)
+        public ProfilInvestisseurController(ProfilInvestisseurContext context, IConverter converters)
         {
             _context = context;
+            _converters = converters;
         }
 
         // GET: api/<ProfilInvestisseurController>
         [HttpGet]
-        public async Task<IList<ProfilInvestisseur>> GetAsync()
+        public async Task<IActionResult> GetAsync()
         {
-            return await _context.ProfilInvestisseur.ToListAsync();
+            return Ok(_converters.GetDtoList(await _context.ProfilInvestisseur.Include(p => p.Subscriber).ToListAsync()));
         }
 
         // GET api/<ProfilInvestisseurController>/5
@@ -35,11 +38,10 @@ namespace TestNoSQLJson.Controllers
         {
             try
             {
-                var profil = await _context.ProfilInvestisseur
-                        .Where(p => p.Subscriber.SubscriberId == subscriberId)
-                        .SingleAsync();
+                var modelList = await _context.ProfilInvestisseur.Include(p => p.Subscriber)
+                        .Where(p => p.Subscriber.SubscriberId == subscriberId).ToListAsync();
 
-                return Ok(profil);
+                return Ok(_converters.GetDtoList(modelList));
             }
             catch (Exception ex)
             {
@@ -61,17 +63,25 @@ namespace TestNoSQLJson.Controllers
             var profil = new ProfilInvestisseur()
             {
                 Subscriber = _context.Subscriber.First(x => x.SubscriberId == value.SubscriberId),
-                Content = await BuildContentAsync(value)
+                Content = BuildContentAsync(value)
             };
 
             await _context.AddAsync(profil);
             await _context.SaveChangesAsync();
-            return Ok(profil);
+            return Ok(_converters.ConvertModelToDto(profil));
         }
 
-        private Task<ProfilLine[]> BuildContentAsync(ProfilInvestisseurDto value)
+        private ProfilLine[] BuildContentAsync(ProfilInvestisseurDto value)
         {
-            throw new NotImplementedException();
+
+            var contentList = new List<ProfilLine>();
+            foreach (var line in value.Content)
+            {
+                var profilLine = _converters.ConvertDtoLineToModelLine(line);
+                contentList.Add(profilLine);
+            }
+
+            return contentList.ToArray();
         }
 
         // PUT api/<ProfilInvestisseurController>/5

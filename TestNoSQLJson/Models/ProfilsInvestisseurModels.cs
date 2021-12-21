@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TestNoSQLJson.Models
 {
@@ -59,23 +55,27 @@ namespace TestNoSQLJson.Models
         public string Surname { get; set; }
     }
 
-        public class ProfilLine
+    public class ProfilLine
     {
-        //public int FieldName { get; set; }
-        //public decimal Version { get; set; }
+        [Required]
+        public string FieldName { get; set; }
+        public decimal LabelVersion { get; set; }
+        [Required]
         public string LabelText { get; set; }
-        public object Value { get; set; }
-
-        public Type Type { get; set; }
+        public string Value { get; set; }
+        public string TypeName { get; set; }
     }
 
     public class Label
     {
+        [Required]
         public string FieldName { get; set; }
+        [Required]
         public decimal Version { get; set; }
-
         [Required]
         public string Text { get; set; }
+        [Required]
+        public bool IsDeleted { get; set; }
     }
 }
 

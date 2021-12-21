@@ -16,17 +16,15 @@ GO
 CREATE TABLE Label (
     FieldName nvarchar(25) NOT NULL,
     [Version] float NOT NULL,
-    [Text] nvarchar(4000) NOT NULL
+    [Text] nvarchar(4000) NOT NULL,
+    IsDeleted bit DEFAULT 0
 );
 
 CREATE TABLE Subscriber (
     SubscriberId int PRIMARY KEY IDENTITY,
     Name nvarchar(100) NULL,
-    Surname nvarchar(100)
+    Surname nvarchar(100) NULL
 );
-
-ALTER TABLE Label
-   ADD CONSTRAINT PK_Labels_FieldName_Version PRIMARY KEY CLUSTERED (FieldName, [Version]);
 
 GO
 DELETE ProfilInvestisseur;
@@ -37,6 +35,14 @@ GO
 GO
 DELETE Subscriber;
 GO
+
+ALTER TABLE Label
+   ADD CONSTRAINT PK_Labels_FieldName_Version PRIMARY KEY CLUSTERED (FieldName, [Version]);
+
+ALTER TABLE ProfilInvestisseur
+    ADD CONSTRAINT FK_ProfilInvestisseur_Subscriber
+	FOREIGN KEY  (SubscriberId) REFERENCES Subscriber(SubscriberId);
+
 INSERT INTO Label (FieldName, [Version], [Text]) VALUES 
 ('vcOccupation', '1.0','Quel est votre occupation principale?'), 
 ('vcEmployeur', '1.0','Quel est le nom de votre employeur actuel?'),

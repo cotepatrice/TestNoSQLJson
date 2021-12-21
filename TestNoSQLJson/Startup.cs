@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TestNoSQLJson.Common;
 using TestNoSQLJson.Models;
 
 namespace TestNoSQLJson
@@ -28,6 +29,7 @@ namespace TestNoSQLJson
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IConverter, Converters>();
             var connection = @"Server=host.docker.internal,1433;Database=Blogging;User Id=SA;Password=yourStrong(!)Password";
             services.AddDbContext<BloggingContext>(options => options.UseSqlServer(connection));
             connection = @"Server=host.docker.internal,1433;Database=ProfilsInverstisseurPOC;User Id=SA;Password=yourStrong(!)Password";

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace TestNoSQLJson.DTOs
 {
     public class ProfilInvestisseurDto
     {
-        public decimal Version { get; set; }
+        public int ProfilInvestisseurId { get; set; }
         public int SubscriberId { get; set; }
-        public IDictionary<string, IDictionary<string, string>> ContentLines { get; set; }
+        public IList<ProfilLineDto> Content { get; set; }
     }
 }
