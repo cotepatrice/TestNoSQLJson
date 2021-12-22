@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestNoSQLJson", "TestNoSQLJ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestJsonObjects", "TestJsonObjects\TestJsonObjects.csproj", "{F135F9F2-E501-4E39-B6CE-45565007FD60}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientWebApp", "ClientWebApp\ClientWebApp.csproj", "{5ADBB028-8F87-40E0-825B-C3DC02C5CAC5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F135F9F2-E501-4E39-B6CE-45565007FD60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F135F9F2-E501-4E39-B6CE-45565007FD60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F135F9F2-E501-4E39-B6CE-45565007FD60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ADBB028-8F87-40E0-825B-C3DC02C5CAC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ADBB028-8F87-40E0-825B-C3DC02C5CAC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ADBB028-8F87-40E0-825B-C3DC02C5CAC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ADBB028-8F87-40E0-825B-C3DC02C5CAC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

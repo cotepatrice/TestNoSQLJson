@@ -8,3 +8,7 @@ TestNoSQLJson/obj/
 TestJsonObjects/bin/
 
 TestJsonObjects/obj/
+
+ClientWebApp/obj/
+
+ClientWebApp/bin/
