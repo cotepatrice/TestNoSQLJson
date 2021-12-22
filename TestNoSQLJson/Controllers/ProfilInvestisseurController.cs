@@ -38,15 +38,19 @@ namespace TestNoSQLJson.Controllers
         {
             try
             {
+                var subscriber = _context.Subscriber.FirstOrDefault(x => x.SubscriberId == subscriberId);
+                if (subscriber is null)
+                    return NotFound($"The Subscriber with Id {subscriberId} does not exist");
+
                 var modelList = await _context.ProfilInvestisseur.Include(p => p.Subscriber)
                         .Where(p => p.Subscriber.SubscriberId == subscriberId).ToListAsync();
-
+             
                 return Ok(_converters.GetDtoList(modelList));
             }
             catch (Exception ex)
             {
                 if(ex.Message == "Sequence contains no elements.")
-                    return NotFound();
+                    return NotFound("Sequence contains no elements.");
 
                 return BadRequest();
             }
@@ -92,8 +96,19 @@ namespace TestNoSQLJson.Controllers
 
         // DELETE api/<ProfilInvestisseurController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            try
+            {
+                _context.ProfilInvestisseur.Remove(await _context.ProfilInvestisseur.FindAsync(id));
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
     }
 }
