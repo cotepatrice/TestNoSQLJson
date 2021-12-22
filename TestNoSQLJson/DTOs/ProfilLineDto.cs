@@ -9,6 +9,6 @@ namespace TestNoSQLJson.DTOs
         public string LabelText { get; set; }
         public string Value { get; set; }
 
-        public DotNetType DotNetType { get; set; }
+        public DotNetProfileModelType DotNetProfileModelType { get; set; }
     }
 }

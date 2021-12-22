@@ -1,10 +1,12 @@
 ﻿namespace TestNoSQLJson.Common
 {
-    public enum DotNetType
+    public enum DotNetProfileModelType
     {
         StringType,
         IntegerType,
         DecimalType,
-        DateTimeType
+        DateTimeType,
+        ProlilLine,
+        CompositeValue
     }
 }

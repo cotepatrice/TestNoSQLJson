@@ -9,7 +9,8 @@ GO
 CREATE TABLE ProfilInvestisseur (
     ProfilInvestisseurId int PRIMARY KEY IDENTITY,
     SubscriberId int NOT NULL,
-	Content nvarchar(MAX)
+	Content nvarchar(MAX),
+	CreationDate datetime NOT NULL
 );
 GO
 
@@ -47,7 +48,10 @@ INSERT INTO Label (FieldName, [Version], [Text]) VALUES
 ('vcOccupation', '1.0','Quel est votre occupation principale?'), 
 ('vcEmployeur', '1.0','Quel est le nom de votre employeur actuel?'),
 ('dDateEmbauche', '1.0','Date de début d''emploi'),
-('dDateEmbauche', '1.1','Date de début d''emploi avec cet employeur')
+('dDateEmbauche', '1.1','Date de début d''emploi avec cet employeur'),
+('DisruptiveEvent', '1.0','Dans le futur, est-ce que l’un ou plusieurs des événements suivants pourraient ' + 
+    'affecter votre situation actuelle en tant qu’investisseur ou pourraient faire en sorte que vous deviez ' + 
+    'retirer votre investissement plus tôt que prévu?')
 
 GO
 INSERT INTO Subscriber ([Name], Surname) VALUES 

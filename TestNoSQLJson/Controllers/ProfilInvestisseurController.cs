@@ -67,7 +67,8 @@ namespace TestNoSQLJson.Controllers
             var profil = new ProfilInvestisseur()
             {
                 Subscriber = _context.Subscriber.First(x => x.SubscriberId == value.SubscriberId),
-                Content = BuildContentAsync(value)
+                Content = BuildContentAsync(value),
+                CreationDate = DateTime.UtcNow
             };
 
             await _context.AddAsync(profil);

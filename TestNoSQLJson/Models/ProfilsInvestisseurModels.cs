@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,6 +19,10 @@ namespace TestNoSQLJson.Models
 
             modelBuilder.Entity<ProfilInvestisseur>()
                 .HasKey(p => new { p.ProfilInvestisseurId });
+
+            modelBuilder.Entity<ProfilInvestisseur>()
+                .Property(e => e.CreationDate)
+                .HasConversion(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
 
             modelBuilder.Entity<Label>()
                 .HasKey(l => new { l.FieldName, l.Version });
@@ -39,6 +44,8 @@ namespace TestNoSQLJson.Models
         public int ProfilInvestisseurId { get; set; }
         public Subscriber Subscriber { get; set; }
         internal string _Content { get; set; }
+        [Required]
+        public DateTime CreationDate { get; set; }
 
         [NotMapped]
         public ProfilLine[] Content

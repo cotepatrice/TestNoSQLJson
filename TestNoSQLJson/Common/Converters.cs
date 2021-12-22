@@ -12,7 +12,7 @@ namespace TestNoSQLJson.Common
             var model = new ProfilLine
             {
                 LabelText = value.LabelText,
-                TypeName = GetRealTypeName(value.DotNetType),
+                TypeName = GetRealTypeName(value.DotNetProfileModelType),
                 FieldName = value.FieldName,
                 LabelVersion = value.LabelVersion,
                 Value = value.Value
@@ -28,7 +28,7 @@ namespace TestNoSQLJson.Common
                 FieldName = value.FieldName,
                 LabelVersion = value.LabelVersion,
                 LabelText = value.LabelText,
-                DotNetType = GetEnumFromText(value.TypeName)
+                DotNetProfileModelType = GetEnumFromText(value.TypeName)
             };
 
             return dto;
@@ -36,7 +36,12 @@ namespace TestNoSQLJson.Common
 
         public ProfilInvestisseurDto ConvertModelToDto(ProfilInvestisseur profilInvestisseur)
         {
-            var dto = new ProfilInvestisseurDto() { ProfilInvestisseurId = profilInvestisseur.ProfilInvestisseurId, SubscriberId = profilInvestisseur.Subscriber.SubscriberId };
+            var dto = new ProfilInvestisseurDto() 
+            { 
+                ProfilInvestisseurId = profilInvestisseur.ProfilInvestisseurId, 
+                SubscriberId = profilInvestisseur.Subscriber.SubscriberId, 
+                CreationDate = profilInvestisseur.CreationDate 
+            };
             dto.Content = new List<ProfilLineDto>();
 
             foreach (var modelLine in profilInvestisseur.Content)
@@ -46,7 +51,7 @@ namespace TestNoSQLJson.Common
                     FieldName = modelLine.FieldName, 
                     LabelVersion = modelLine.LabelVersion, 
                     LabelText = modelLine.LabelText, 
-                    DotNetType = GetEnumFromText(modelLine.TypeName), 
+                    DotNetProfileModelType = GetEnumFromText(modelLine.TypeName), 
                     Value = modelLine.Value 
                 });
             }
@@ -66,27 +71,35 @@ namespace TestNoSQLJson.Common
             return dtoList;
         }
 
-        private DotNetType GetEnumFromText(string typeName)
+        private DotNetProfileModelType GetEnumFromText(string typeName)
         {
             if (typeName == typeof(int).FullName)
-                return DotNetType.IntegerType;
+                return DotNetProfileModelType.IntegerType;
 
             if (typeName == typeof(decimal).FullName)
-                return DotNetType.DecimalType;
+                return DotNetProfileModelType.DecimalType;
 
             if (typeName == typeof(DateTime).FullName)
-                return DotNetType.DateTimeType;
+                return DotNetProfileModelType.DateTimeType;
 
-            return DotNetType.StringType;
+            if (typeName == typeof(ProfilLineDto).FullName)
+                return DotNetProfileModelType.ProlilLine;
+
+            if (typeName == typeof(CompositeValueDto).FullName)
+                return DotNetProfileModelType.CompositeValue;
+
+            return DotNetProfileModelType.StringType;
         }
 
-        private static string GetRealTypeName(DotNetType type)
+        private static string GetRealTypeName(DotNetProfileModelType type)
         {
             return type switch
             {
-                DotNetType.IntegerType => typeof(int).FullName,
-                DotNetType.DecimalType => typeof(decimal).FullName,
-                DotNetType.DateTimeType => typeof(DateTime).FullName,
+                DotNetProfileModelType.IntegerType => typeof(int).FullName,
+                DotNetProfileModelType.DecimalType => typeof(decimal).FullName,
+                DotNetProfileModelType.DateTimeType => typeof(DateTime).FullName,
+                DotNetProfileModelType.ProlilLine => typeof(ProfilLineDto).FullName,
+                DotNetProfileModelType.CompositeValue => typeof(CompositeValueDto).FullName,
                 _ => typeof(string).FullName
             };
         }

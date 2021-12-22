@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TestNoSQLJson.DTOs
 {
@@ -7,5 +8,6 @@ namespace TestNoSQLJson.DTOs
         public int ProfilInvestisseurId { get; set; }
         public int SubscriberId { get; set; }
         public IList<ProfilLineDto> Content { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 }
