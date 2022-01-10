@@ -88,7 +88,6 @@ You have three choices when it comes to how you prefer to run the app. You can e
 
 * Run `npm install` in ClientApp directory.
 * If ther is a problem with npm detecting a self cert certificate in the chain, run `npm config set strict-ssl false`
-* If there's a problem with npm inst Run the .NET application using `dotnet run`
 * Run the .NET application using `dotnet run`
 * Browse to [http://localhost:5000](http://localhost:5000) for ASP.&#8203;NET Core + Vue app or browse to [http://localhost:8080](http://localhost:8080) for Vue app only.
 

@@ -9,6 +9,8 @@
           <v-data-table
             :headers="headers"
             :items="profilInvestisseur"
+            :expanded.sync="expanded"
+            show-expand
             hide-default-footer
             :loading="loading"
             class="elevation-1"
@@ -25,9 +27,15 @@
             <template v-slot:[`item.profilInvestisseurId`]="{ item }">
               <td>{{ item.profilInvestisseurId }}</td>
             </template>
-            <!-- <template v-slot:[`item.temperatureC`]="{ item }">
-              <v-chip :color="getColor(item.temperatureC)" dark>{{ item.temperatureC }}</v-chip>
-            </template> -->
+            <template v-slot:expanded-item="{ headers, item }">
+              <td :colspan="headers.length">
+                <ul id="example-1">
+                  <li v-for="content in item.content" :key=getUniqueKey(content)>
+                    {{ content.labelText }} : {{ getContentValue(content.dotNetProfileModelType, content.value) }}
+                  </li>
+                </ul>
+              </td>
+            </template>
           </v-data-table>
         </v-col>
       </v-row>
@@ -42,7 +50,7 @@
       <a href="https://localhost:44365/api/ProfilInvestisseur/1">https://localhost:44365/api/ProfilInvestisseur/1</a>)
       <br />
       API call would fail with status code 404 when calling from Vue app (default at
-      <a href="http://localhost:8080/fetch-profil">http://localhost:8080</a>) without devServer proxy
+      <a href="http://localhost:8080/fetch-profil">http://localhost:8080/fetch-profil</a>) without devServer proxy
       settings in vue.config.js file.
     </v-alert>
   </v-container>
@@ -50,13 +58,16 @@
 
 <script lang="ts">
 // an example of a Vue Typescript component using Vue.extend
+import { ProfilLine } from '@/models/ProfilLine'
 import Vue from 'vue'
-import { Forecast } from '../models/Forecast'
 import { ProfilInvestisseur } from '../models/ProfilInvestisseur'
+import { ComplexLineValue } from '../models/ComplexLineValue'
 
 export default Vue.extend({
   data() {
     return {
+      expanded: [] as ProfilInvestisseur[],
+      // singleExpand: false,
       loading: true,
       showError: false,
       errorMessage: 'Error while loading weather forecast.',
@@ -65,33 +76,53 @@ export default Vue.extend({
         { text: 'Creation Date', value: 'creationDate' },
         { text: 'Subscriber Id', value: 'subscriberId' },
         { text: 'Id Profil', value: 'profilInvestisseurId' },
-        // { text: 'Summary', value: 'summary' }
+        { text: '', value: 'data-table-expand' },
       ]
     }
   },
   methods: {
-    getColor(temperature: number) {
-      if (temperature < 0) {
-        return 'blue'
-      } else if (temperature >= 0 && temperature < 30) {
-        return 'green'
+    expandAllIssues(items: ProfilInvestisseur[], status: boolean) {
+      if (status) {
+        this.expanded = items
       } else {
-        return 'red'
+        this.expanded = []
       }
     },
+    getUniqueKey(item: ProfilLine){
+      return item.labelText + "-" + item.labelVersion
+   },
     async fetchProfils() {
       try {
         const response = await this.$axios.get<ProfilInvestisseur[]>('api/ProfilInvestisseur/1')
         this.profilInvestisseur = response.data
       } catch (e) {
         this.showError = true
-        this.errorMessage = `Error while loading weather forecast: ${e.message}.`
+        var error = e as Error
+        this.errorMessage = `Error while loading weather forecast: ${error.message}.`
       }
       this.loading = false
+    },
+    getContentValue(dotNetProfileModelType: number, value: string) {
+      if(dotNetProfileModelType === 4){
+        var profileLineValue = JSON.parse(value) as ProfilLine[];
+        var response = ""
+        profileLineValue.forEach(element => {
+          console.log(`element.labelText = ${element.labelText}`)
+          response += ` | ${element.labelText} : ${this.getContentValue(element.dotNetProfileModelType as number, element.value as string)}`
+        });
+        return response;
+      }
+      if(dotNetProfileModelType === 5){
+        var complexLineValue = JSON.parse(value) as ComplexLineValue 
+        return `${complexLineValue.numberOfUnits} ${complexLineValue.unitName}`
+      }
+
+      return value;
     }
   },
   async created() {
-    await this.fetchProfils()
+    await this.fetchProfils();
+    this.expandAllIssues(this.profilInvestisseur, true);
   }
 })
 </script>

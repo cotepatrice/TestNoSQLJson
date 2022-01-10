@@ -46,9 +46,11 @@ ALTER TABLE ProfilInvestisseur
 
 INSERT INTO Label (FieldName, [Version], [Text]) VALUES 
 ('vcOccupation', '1.0','Quel est votre occupation principale?'), 
+('vcOccupation', '1.1','Quel est le titre de votre emploi?'),
 ('vcEmployeur', '1.0','Quel est le nom de votre employeur actuel?'),
 ('dDateEmbauche', '1.0','Date de début d''emploi'),
 ('dDateEmbauche', '1.1','Date de début d''emploi avec cet employeur'),
+('dDateFinEmploi', '1.0','Date de fin d''emploi avec cet employeur'),
 ('DisruptiveEvent', '1.0','Dans le futur, est-ce que l’un ou plusieurs des événements suivants pourraient ' + 
     'affecter votre situation actuelle en tant qu’investisseur ou pourraient faire en sorte que vous deviez ' + 
     'retirer votre investissement plus tôt que prévu?')
